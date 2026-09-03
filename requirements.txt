@@ -1,0 +1,3 @@
+paramiko>=3.0
+textual>=0.80
+keyring>=24.0   # optional: store passwords in the OS keyring

@@ -1,0 +1,352 @@
+/* pytty — palette borrowed from rack hardware: cold steel, signal amber,
+   link-state green and red. Nothing decorative; every colour means something. */
+
+$steel-0: #0f141a;
+$steel-1: #151c24;
+$steel-2: #1e2833;
+$rule:    #2b3744;
+$ink:     #c6d0da;
+$muted:   #6d7d8f;
+$amber:   #e0a13a;
+$up:      #4fb477;
+$down:    #d9534f;
+
+Screen {
+    background: $steel-0;
+    color: $ink;
+    layers: base overlay;
+}
+
+/* Scrollbars are chrome, not content: keep them in the rule colour. */
+Screen, VerticalScroll, OptionList, RichLog, TabPane, TextArea {
+    scrollbar-background: $steel-0;
+    scrollbar-background-hover: $steel-0;
+    scrollbar-background-active: $steel-0;
+    scrollbar-color: $rule;
+    scrollbar-color-hover: $muted;
+    scrollbar-color-active: $amber;
+    scrollbar-corner-color: $steel-0;
+    scrollbar-size-vertical: 1;
+    scrollbar-size-horizontal: 0;
+}
+
+Header {
+    background: $steel-1;
+    color: $ink;
+    text-style: none;
+}
+
+Footer {
+    background: $steel-1;
+    color: $muted;
+}
+
+Footer > .footer-key--key {
+    background: $steel-2;
+    color: $amber;
+}
+
+/* ---------- main layout ---------- */
+#body {
+    height: 1fr;
+}
+
+#list-pane {
+    width: 3fr;
+    min-width: 42;
+    border-right: solid $rule;
+}
+
+#detail-pane {
+    width: 2fr;
+    min-width: 32;
+    padding: 0 1;
+}
+
+#filter {
+    display: none;
+    border: none;
+    background: $steel-2;
+    color: $ink;
+    height: 1;
+    padding: 0 1;
+    margin-bottom: 1;
+}
+
+#filter.visible {
+    display: block;
+}
+
+#filter > .input--placeholder {
+    color: $muted;
+}
+
+/* ---------- session list ---------- */
+SessionList {
+    background: $steel-0;
+    border: none;
+    padding: 0;
+    height: 1fr;
+    scrollbar-size-vertical: 1;
+}
+
+SessionList > .option-list--option-highlighted {
+    background: $steel-2;
+    color: $ink;
+    text-style: none;
+}
+
+SessionList:focus > .option-list--option-highlighted {
+    background: $steel-2;
+    color: $ink;
+}
+
+SessionList > .option-list--option-disabled {
+    color: $muted;
+}
+
+#empty-state {
+    height: 1fr;
+    padding: 2 3;
+    color: $muted;
+}
+
+/* ---------- detail ---------- */
+#detail-title {
+    height: auto;
+    padding: 0 0 1 0;
+    border-bottom: solid $rule;
+}
+
+#detail-body {
+    height: 1fr;
+    padding: 1 0;
+}
+
+#activity-heading {
+    height: auto;
+    color: $muted;
+    border-top: solid $rule;
+    padding-top: 1;
+}
+
+#activity {
+    height: 10;
+    background: $steel-0;
+    color: $muted;
+}
+
+/* ---------- editor ---------- */
+EditScreen, SettingsScreen {
+    align: center middle;
+}
+
+#editor {
+    width: 88;
+    max-width: 96%;
+    height: 28;
+    max-height: 96%;
+    background: $steel-1;
+    border: solid $rule;
+    padding: 1 2;
+}
+
+#editor-title {
+    height: 1;
+    color: $amber;
+    margin-bottom: 1;
+}
+
+#editor TabbedContent {
+    height: 1fr;
+}
+
+/* The proxy fields hide wholesale unless a session has its own proxy. */
+#proxy-fields {
+    height: auto;
+}
+
+#proxy-summary, #settings-origin {
+    color: $amber;
+    padding: 0 0 1 20;
+}
+
+#editor Tabs {
+    background: $steel-1;
+}
+
+#editor Tab {
+    color: $muted;
+}
+
+#editor Tab.-active {
+    color: $amber;
+}
+
+#editor TabPane {
+    padding: 1 1 0 1;
+}
+
+.field {
+    height: 1;
+    margin-bottom: 0;
+}
+
+/* Rows with an explanation below get their breathing room from the hint. */
+.field.spaced {
+    margin-bottom: 1;
+}
+
+.field-label {
+    width: 20;
+    height: 1;
+    color: $muted;
+    padding-right: 2;
+    text-align: right;
+}
+
+.field-input {
+    width: 1fr;
+    max-width: 46;
+    background: $steel-2;
+    border: none;
+    height: 1;
+    padding: 0 1;
+    color: $ink;
+}
+
+.field-input:focus {
+    background: $rule;
+    color: $ink;
+}
+
+.field-input.-invalid {
+    background: #33232a;
+}
+
+Select.field-input SelectCurrent {
+    border: none;
+    background: $steel-2;
+    height: 1;
+}
+
+Select.field-input SelectOverlay {
+    background: $steel-2;
+    border: solid $rule;
+}
+
+.field-switch {
+    height: 1;
+    width: 6;
+    background: $steel-2;
+    border: none;
+}
+
+.field-switch > .switch--slider {
+    color: $rule;
+    background: $steel-2;
+}
+
+.field-switch.-on > .switch--slider {
+    color: $up;
+}
+
+.field-area {
+    height: 5;
+    background: $steel-2;
+    border: none;
+    margin-bottom: 1;
+    padding: 0 1;
+}
+
+.hint {
+    color: $muted;
+    height: auto;
+    padding: 0 0 1 20;
+}
+
+#keepalive-summary, #reconnect-summary {
+    color: $amber;
+    padding: 0 0 1 20;
+}
+
+#editor-status {
+    height: 2;
+    color: $down;
+    padding-top: 1;
+}
+
+#editor-buttons {
+    height: 3;
+    align-horizontal: right;
+}
+
+#editor-buttons Button {
+    margin-left: 2;
+    min-width: 12;
+    border: none;
+    height: 3;
+    background: $steel-2;
+    color: $ink;
+}
+
+#editor-buttons Button:hover {
+    background: $rule;
+}
+
+#editor-buttons Button.primary {
+    background: $amber;
+    color: $steel-0;
+    text-style: bold;
+}
+
+/* ---------- dialogs ---------- */
+ConfirmScreen, HelpScreen {
+    align: center middle;
+}
+
+#dialog {
+    width: 60;
+    height: auto;
+    background: $steel-1;
+    border: solid $rule;
+    padding: 1 2;
+}
+
+#dialog-message {
+    height: auto;
+    padding-bottom: 1;
+}
+
+#dialog-buttons {
+    height: 3;
+    align-horizontal: right;
+}
+
+#dialog-buttons Button {
+    margin-left: 2;
+    min-width: 10;
+    border: none;
+    background: $steel-2;
+    color: $ink;
+}
+
+#dialog-buttons Button.danger {
+    background: $down;
+    color: $steel-0;
+}
+
+#help {
+    width: 70;
+    height: auto;
+    max-height: 90%;
+    background: $steel-1;
+    border: solid $rule;
+    padding: 1 2;
+}
+
+/* Textual's default tab underline is blue; keep the accent consistent. */
+#editor Underline > .underline--bar {
+    color: $amber;
+    background: $rule;
+}

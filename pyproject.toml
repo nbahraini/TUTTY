@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytty"
+version = "1.1.0"
+description = "A terminal session manager for SSH, with keepalive probing, automatic reconnection and proxy support."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["ssh", "tui", "terminal", "putty", "keepalive", "reconnect", "proxy", "socks5"]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Networking",
+    "Topic :: Terminals",
+]
+dependencies = [
+    "paramiko>=3.0",
+    "textual>=0.80",
+]
+
+[project.optional-dependencies]
+keyring = ["keyring>=24.0"]
+windows = ["windows-curses; sys_platform == 'win32'"]
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+pytty = "pytty.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["pytty*"]
+
+[tool.setuptools.package-data]
+pytty = ["tui/*.tcss"]

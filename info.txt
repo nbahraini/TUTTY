@@ -1,0 +1,73 @@
+Extract and install:
+
+```sh
+tar xzf tutty_v03.tar.gz
+cd pytty
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e .              # or: pip install -e '.[keyring]'
+```
+
+Python 3.10+. The `keyring` extra is what lets it remember SSH and proxy passwords; without it you'll be asked each time and it says so on startup.
+
+## Running it
+
+```sh
+pytty                         # the session manager
+pytty prod-web                # straight to a saved session
+pytty deploy@10.0.0.5         # ad-hoc, saves nothing
+pytty --import-ssh-config     # pull in your ~/.ssh/config hosts
+```
+
+If you skipped `pip install -e .`, `python3 -m pytty` works the same from inside the directory.
+
+## Setting up the proxy
+
+Open `pytty`, press `p`. Fill in type, host, port, and username if it needs one. Highlight a session first and its host:port pre-fills the test field — then `ctrl+t` opens a real tunnel through the proxy and tells you exactly what went wrong if it can't. `ctrl+s` saves.
+
+Every session uses that by default. To change one, press `e` on it and go to the Proxy tab.
+
+Or skip the UI entirely:
+
+```sh
+pytty prod-web --proxy socks5h://proxy.corp:1080
+pytty prod-web --proxy http://user:pass@proxy.corp:3128
+```
+
+One gotcha worth repeating: bare hostnames with no dot bypass the proxy by default (the `<local>` rule). `myserver` goes direct, `myserver.corp.example` goes through. Add `--proxy-exclude none` if you want everything proxied.
+
+## Trying it without touching your real config
+
+```sh
+PYTTY_HOME=/tmp/pytty-test pytty
+```
+
+That puts `sessions.json`, `settings.json` and `known_hosts` in a throwaway directory.
+
+## Running the tests
+
+```sh
+python -m pytest tests/          # 157 unit tests, no setup needed
+python tests/tui_snapshot.py     # headless UI checks
+```
+
+The four end-to-end scripts need an sshd on `127.0.0.1:2222`. Setup, which is what I used here:
+
+```sh
+mkdir -p /run/sshd && cd /tmp && mkdir sshtest && cd sshtest
+ssh-keygen -t ed25519 -f host_key -N ''
+ssh-keygen -t ed25519 -f id_test -N ''
+cat id_test.pub >> ~/.ssh/authorized_keys
+printf 'Port 2222\nListenAddress 127.0.0.1\nHostKey /tmp/sshtest/host_key\nPidFile /tmp/sshtest/sshd.pid\nUsePAM no\nAuthorizedKeysFile %s/.ssh/authorized_keys\n' "$HOME" > sshd_config
+/usr/sbin/sshd -f /tmp/sshtest/sshd_config
+```
+
+Then, from the pytty directory:
+
+```sh
+python tests/e2e_proxy.py /tmp/sshtest/id_test      # the new one
+python tests/e2e_reconnect.py /tmp/sshtest/id_test
+python tests/e2e_socks.py /tmp/sshtest/id_test
+python tests/e2e_keepalive.py /tmp/sshtest/id_test
+```
+
+`e2e_proxy` stands up its own SOCKS5 and HTTP proxies in-process, so there's nothing else to install.
