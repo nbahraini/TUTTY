@@ -1,8 +1,3 @@
-# to setup , run and use this software just use 
-```
-run-tutty.bat   #in windows system (tested on win11)
-run_tutty.sh    #in Linux system (tested and used for Long term on Denian 12)
-```
 # pytty
 
 A terminal session manager for SSH. Saved connection profiles like PuTTY, a
@@ -27,6 +22,11 @@ badges light up only when keepalive, reconnect and a proxy are actually in
 force for that host, so you can see which machines are protected — and which
 are going out through a proxy — without opening anything.
 
+##  Simple Usage (install, Setup and use) 
+```
+run-tutty.bat   #in windows system (tested on win11)
+run_tutty.sh    #in Linux system (tested and used for Long term on Denian 12)
+```
 ## Install
 
 ```sh
