@@ -1,4 +1,4 @@
-# pytty
+# tutty (pytty)
 
 A terminal session manager for SSH. Saved connection profiles like PuTTY, a
 keyboard-driven interface that runs in your terminal, the two things that keep
